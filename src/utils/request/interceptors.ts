@@ -3,7 +3,7 @@ import type {
   HttpRequestAbstract,
   HttpRequestConfig,
   HttpResponse,
-} from 'uview-plus/libs/luch-request/index'
+} from 'uview-plus/libs/luch-request'
 import { showMessage } from './status'
 import { getToken } from '@/utils/auth'
 import storage from '@/utils/storage'

@@ -25,7 +25,7 @@
       "style": {
         "navigationStyle": "custom"
       }
-    }
+    },
   ],
   "subPackages": [
     {
@@ -66,7 +66,7 @@
   },
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "照护日记",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   }

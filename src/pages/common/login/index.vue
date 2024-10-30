@@ -1,51 +1,53 @@
 <template>
-  <view>
+  <landing-page v-if="landing" @start="handleStart" />
+  <view v-else>
     <view class="login-form-wrap">
       <view class="title">
-        欢迎登录
+        手机号码登录
       </view>
-      <input v-model="tel" class="u-border-bottom" type="number" placeholder="请输入手机号">
+      <input v-model="tel" class="u-border-bottom text-4" type="number" placeholder="请输入手机号">
       <view class="u-border-bottom my-40rpx flex">
-        <input v-model="code" class="flex-1" type="number" placeholder="请输入验证码">
+        <input v-model="code" class="flex-1 text-4" type="number" placeholder="请输入验证码">
         <view>
           <u-code ref="uCodeRef" @change="codeChange" />
-          <u-button :text="tips" type="success" size="mini" @click="getCode" />
+          <u-button
+            :text="tips"
+            plain="true"
+            class="border-none"
+            style="background: transparent"
+            @click="getCode"
+          />
         </view>
       </view>
       <button class="login-btn" :style="[inputStyle]" @tap="submit">
-        登录 <text class="i-mdi-login" />
+        登录
+        <text class="i-mdi-login ml-5rpx" />
       </button>
-
       <view class="alternative">
-        <view class="password">
-          密码登录
-        </view>
-        <view class="issue flex items-center">
-          遇到问题 <text class="i-mdi-help" />
+        <view>
+          新用户注册
+          <text class="i-mdi:chevron-right" />
         </view>
       </view>
     </view>
-    <view class="login-type-wrap">
-      <view class="item wechat">
-        <view class="icon">
-          <u-icon size="35" name="weixin-fill" color="rgb(83,194,64)" />
-        </view>
-        微信
-      </view>
-      <view class="item QQ">
-        <view class="icon">
-          <u-icon size="35" name="qq-fill" color="rgb(17,183,233)" />
-        </view>
-        QQ
-      </view>
-    </view>
-    <view class="hint">
-      登录代表同意
-      <text class="link">
-        用户协议、隐私政策，
-      </text>
-      并授权使用您的账号信息（如昵称、头像、收获地址）以便您统一管理
-    </view>
+  </view>
+  <!--  <view class="login-type-wrap"> -->
+  <!--    <button class="btn" @tap="quickLogin"> -->
+  <!--      <text class="i-mdi-wechat mr-5rpx" /> -->
+  <!--      <text>微信快捷登录</text> -->
+  <!--    </button> -->
+  <!--  </view> -->
+
+  <view class="hint">
+    <up-radio-group v-model="agreedShow">
+      <up-radio shape="square" />
+    </up-radio-group>
+
+    登录代表同意
+    <text class="link">
+      用户协议、隐私政策，
+    </text>
+    并授权使用您的账号信息（如昵称、头像、手机号等）以便您统一管理
   </view>
 </template>
 
@@ -55,9 +57,14 @@ import type { CSSProperties } from 'vue'
 import { setToken } from '@/utils/auth'
 // import { useUserStore } from '@/store';
 
+const landing: Ref<boolean> = ref(false)
+const handleStart = (value) => {
+  landing.value = value
+}
+
 // const userStore = useUserStore();
-const tel = ref<string>('18502811111')
-const code = ref<string>('1234')
+const tel = ref<string>('')
+const code = ref<string>('')
 const tips = ref<string>()
 const uCodeRef = ref<InstanceType<typeof uCode> | null>(null)
 
@@ -91,6 +98,7 @@ function getCode() {
     uni.$u.toast('倒计时结束后再发送')
   }
 }
+
 async function submit() {
   if (!uni.$u.test.mobile(Number(tel.value))) {
     uni.$u.toast('请输入正确的手机号')
@@ -106,8 +114,10 @@ async function submit() {
   // });
   // if (!res) return;
   setToken('1234567890')
-  uni.reLaunch({ url: '/pages/tab/home/index' })
+  await uni.reLaunch({ url: '/pages/tab/home/index' })
 }
+
+const agreedShow: Ref<boolean> = ref(false)
 </script>
 
 <style lang="scss" scoped>
@@ -115,7 +125,7 @@ async function submit() {
   @apply mt-80rpx mx-auto mb-0 w-600rpx;
 
   .title {
-    @apply mb-100rpx text-60rpx text-left font-500;
+    @apply mb-100rpx text-60rpx text-left font-400;
   }
 
   input {
@@ -129,34 +139,47 @@ async function submit() {
   }
 
   .login-btn {
-    @apply flex items-center justify-center py-12rpx px-0 text-30rpx bg-#fdf3d0 border-none;
+    @apply flex items-center justify-center py-12rpx px-0 text-4 bg-#f372ae border-none c-white;
 
-    color: $u-tips-color;
+    border-radius: 40rpx;
 
-    &::after {
-      @apply border-none;
+    &:hover {
+      background-color: #eda2c5; // 当鼠标悬停时改变颜色
     }
   }
 
   .alternative {
-    @apply flex justify-between mt-30rpx;
+    @apply flex mt-30rpx justify-center;
 
-    color: $u-tips-color;
+    color: #262424;
   }
 }
 
 .login-type-wrap {
-  @apply flex justify-between pt-350rpx px-150rpx pb-150rpx;
+  @apply flex pt-100rpx px-150rpx pb-150rpx;
+  // 居中对齐
 
-  .item {
-    @apply flex items-center flex-col text-28rpx;
+  .btn {
+    @apply flex flex-auto justify-center items-center w-full h-100rpx text-4 text-white;
 
-    color: $u-content-color;
+    padding: 0; // 移除默认内边距以确保内容间的间距由你控制
+    background-color: #28bb9c; // 按钮背景颜色
+    // 使用 `w-full` 使按钮宽度自适应
+    border-radius: 15rpx;
+
+    // 添加阴影效果
+    box-shadow: 0 4rpx 8rpx rgb(0 0 0 / 20%);
+
+    // 增加悬停效果
+    &:hover {
+      background-color: #24a68a; // 当鼠标悬停时改变颜色
+    }
   }
+
 }
 
 .hint {
-  @apply px-40rpx py-20rpx text-20rpx;
+  @apply m-t-30rpx px-40rpx py-20rpx text-28rpx;
 
   color: $u-tips-color;
 

@@ -2,12 +2,12 @@
  * @name createVitePlugins
  * @description 封装plugins数组统一调用
  */
-import uniPlugin from '@dcloudio/vite-plugin-uni';
-import type { PluginOption } from 'vite';
-import ViteRestart from 'vite-plugin-restart';
-import { AutoImportDeps } from './autoImport';
-import { AutoRegistryComponents } from './component';
-import { ConfigUnoCSSPlugin } from './unocss';
+import uniPlugin from '@dcloudio/vite-plugin-uni'
+import type { PluginOption } from 'vite'
+import ViteRestart from 'vite-plugin-restart'
+import { AutoImportDeps } from './autoImport'
+import { AutoRegistryComponents } from './component'
+import { ConfigUnoCSSPlugin } from './unocss'
 // import { ConfigImageminPlugin } from './imagemin';
 // import { ReplaceUrlPlugin } from './replaceUrl';
 // import { CleanImagePlugin } from './cleanImage';
@@ -26,7 +26,7 @@ export default function createVitePlugins(isBuild: boolean) {
       // 通过这个插件，在修改vite.config.js文件则不需要重新运行也生效配置
       restart: ['vite.config.ts'],
     }),
-  ];
+  ]
 
   if (isBuild) {
     const buildPlugins: (PluginOption | PluginOption[])[] = [
@@ -38,9 +38,9 @@ export default function createVitePlugins(isBuild: boolean) {
       // CleanImagePlugin()
       // 打包视图分析
       // VisualizerPlugin(),
-    ];
-    vitePlugins.push(...buildPlugins);
+    ]
+    vitePlugins.push(...buildPlugins)
   }
 
-  return vitePlugins;
+  return vitePlugins
 }

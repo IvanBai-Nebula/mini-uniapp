@@ -145,6 +145,8 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .button {
+  @apply flex;
+
   position: relative;
   display: flex;
   justify-content: center;
