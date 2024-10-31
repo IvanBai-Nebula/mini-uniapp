@@ -1,5 +1,7 @@
+import type { User } from '@/store/modules/user/types'
+
 export interface ProfileParams {
-  user_id?: string;
+  id?: string;
 }
 
 export interface LoginParams {
@@ -7,17 +9,13 @@ export interface LoginParams {
   code: string;
 }
 
+export interface RegisterParams extends LoginParams {
+  username: string;
+}
+
 export interface LoginByCodeParams {
   code: string;
 }
 
-export interface LoginByCodeResult {
-  [key: string]: any;
-}
-
-export interface LoginResult {
-  token: string;
-  user_id: number;
-  user_name: string;
-  avatar: string;
+export interface LoginResult extends User {
 }

@@ -9,10 +9,12 @@ import { createViteProxy } from './build/config'
 export default defineConfig(({ command, mode }): UserConfig => {
   // mode: 区分生产环境还是开发环境
   console.log('command, mode -> ', command, mode)
-
+  // 区分平台
   const { UNI_PLATFORM } = process.env
   console.log('UNI_PLATFORM -> ', UNI_PLATFORM) // 得到 mp-weixin, h5, app 等
-
+  // 加载环境变量
+  // eslint-disable-next-line ts/ban-ts-comment
+  // @ts-expect-error
   const env = loadEnv(mode, fileURLToPath(new URL('./env', import.meta.url)))
   console.log('环境变量 env -> ', env)
 
@@ -24,6 +26,8 @@ export default defineConfig(({ command, mode }): UserConfig => {
       // https://cn.vitejs.dev/config/#resolve-alias
       alias: {
         // 设置别名
+        // eslint-disable-next-line ts/ban-ts-comment
+        // @ts-expect-error
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
@@ -42,12 +46,13 @@ export default defineConfig(({ command, mode }): UserConfig => {
           api: 'modern-compiler',
           // 消除一些不必要的警告
           silenceDeprecations: ['legacy-js-api'],
+          additionalData: '@import "@/static/styles/colors.scss";',
         },
       },
     },
     plugins: createVitePlugins(isBuild),
     esbuild: {
-      drop: env.VITE_DROP_CONSOLE ? ['console', 'debugger'] : [],
+      drop: env.VITE_DROP_CONSOLE === 'true' ? ['console', 'debugger'] : [],
     },
   }
 })

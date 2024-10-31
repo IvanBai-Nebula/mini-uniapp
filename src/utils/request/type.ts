@@ -1,7 +1,7 @@
 // 返回res.data的interface
 export interface IResponse<T = any> {
-  code: number | string;
-  result: T;
-  message: string;
+  success: boolean ;
+  data: T;
+  msg: string;
   status: string | number;
 }

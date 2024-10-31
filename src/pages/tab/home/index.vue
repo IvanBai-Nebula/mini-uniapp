@@ -22,8 +22,15 @@ import { useUserStore } from '@/store'
 const title = ref<string>()
 title.value = import.meta.env.VITE_APP_TITLE
 
-const store = useUserStore()
-console.log('store.user_name', store.user_name)
+const userStore = useUserStore()
+
+onShow(() => {
+  if (!userStore.user) {
+    uni.navigateTo({
+      url: '/pages/login/index',
+    })
+  }
+})
 
 const showAgreePrivacy = ref(true)
 // 同意隐私协议

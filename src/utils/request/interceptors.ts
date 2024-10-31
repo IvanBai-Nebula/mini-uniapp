@@ -5,7 +5,6 @@ import type {
   HttpResponse,
 } from 'uview-plus/libs/luch-request'
 import { showMessage } from './status'
-import { getToken } from '@/utils/auth'
 import storage from '@/utils/storage'
 import useUserStore from '@/store/modules/user'
 
@@ -25,13 +24,14 @@ function requestInterceptors(http: HttpRequestAbstract) {
       // 初始化请求拦截器时，会执行此方法，此时data为undefined，赋予默认{}
       config.data = config.data || {}
 
+      const userStore = useUserStore()
       // 是否需要设置 token
-      const isToken = config.custom?.auth === false
+      const token = userStore.getToken()
       // 是否需要防止数据重复提交
       const isRepeatSubmit = config.custom?.repeatSubmit === false
-      if (getToken() && !isToken && config.header) {
+      if (token && config.header) {
         // token设置
-        config.header.token = getToken()
+        config.header.token = token
       }
 
       if (!isRepeatSubmit && (config.method === 'POST' || config.method === 'UPLOAD')) {
@@ -71,25 +71,32 @@ function responseInterceptors(http: HttpRequestAbstract) {
    * @param {object} http
    */
   http.interceptors.response.use(
-    async (response: HttpResponse) => {
+    async (res: HttpResponse) => {
       /* 对响应成功做点什么 可使用async await 做异步操作 */
-      const data = response.data
+      const data = res.data
       // 配置参数
-      const config = response.config
+      const config = res.config
       // 自定义参数
       const custom = config?.custom
 
       // 请求成功则返回结果
-      if (data.code === 200)
-        return data || {}
+      if (res.statusCode === 200) {
+        if (data.success) {
+          return data || {}
+        }
+        else {
+          uni.$u.toast(data.msg || '请求失败，请稍后再试')
+          return Promise.reject(data.msg || '请求失败，请稍后再试')
+        }
+      }
 
       // 登录状态失效，重新登录
-      if (data.code === 401) {
+      if (res.statusCode === 401) {
         // 是否在获取token中,防止重复获取
         if (!isRefreshing) {
           // 修改登录状态为true
           isRefreshing = true
-          await useUserStore().authLogin()
+          await useUserStore().quickLogin()
           // 登录完成之后，开始执行队列请求
           requestQueue.forEach(cb => cb())
           // 重试完了清空这个队列
@@ -110,7 +117,7 @@ function responseInterceptors(http: HttpRequestAbstract) {
 
       // 如果没有显式定义custom的toast参数为false的话，默认对报错进行toast弹出提示
       if (custom?.toast !== false)
-        uni.$u.toast(data.message)
+        uni.$u.toast(data.msg || '请求失败，请稍后再试')
 
       // 如果需要catch返回，则进行reject
       if (custom?.catch) {
@@ -121,14 +128,14 @@ function responseInterceptors(http: HttpRequestAbstract) {
         return new Promise(() => {})
       }
     },
-    (response: HttpError) => {
-      if (response.statusCode) {
+    (res: HttpError) => {
+      if (res.statusCode) {
         // 请求已发出，但是不在2xx的范围
-        showMessage(response.statusCode)
-        return Promise.reject(response.data)
+        showMessage(res.statusCode)
+        return Promise.reject(res.data)
       }
       showMessage('网络连接异常,请稍后再试!')
-      return Promise.reject(response)
+      return Promise.reject(res)
     },
   )
 }

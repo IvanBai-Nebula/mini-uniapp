@@ -1,11 +1,11 @@
-import type { VNodeChild } from 'vue';
+import type { VNodeChild } from 'vue'
 
 declare global {
   // vue
-  declare type VueNode = VNodeChild | JSX.Element;
+  declare type VueNode = VNodeChild | JSX.Element
 
-  declare type TimeoutHandle = ReturnType<typeof setTimeout>;
-  declare type IntervalHandle = ReturnType<typeof setInterval>;
+  declare type TimeoutHandle = ReturnType<typeof setTimeout>
+  declare type IntervalHandle = ReturnType<typeof setInterval>
 
   interface ImportMetaEnv extends ViteEnv {
     __: unknown;
@@ -17,9 +17,9 @@ declare global {
     VITE_DROP_CONSOLE: boolean;
   }
 
-  declare function parseInt(s: string | number, radix?: number): number;
+  declare function parseInt(s: string | number, radix?: number): number
 
-  declare function parseFloat(string: string | number): number;
+  declare function parseFloat(string: string | number): number
 
   declare interface Uni {
     $u: any;
@@ -30,4 +30,5 @@ declare global {
       view: _View;
     }
   }
+
 }

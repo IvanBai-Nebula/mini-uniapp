@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mpUpdate } from '@/utils/index'
+import { mpUpdate } from '@/utils'
 
 onLaunch(() => {
   console.log('App Launch')

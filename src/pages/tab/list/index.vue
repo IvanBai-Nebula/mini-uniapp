@@ -17,7 +17,16 @@
 
 <script setup lang="ts">
 import zPaging from 'z-paging/components/z-paging/z-paging.vue'
+import { useUserStore } from '@/store'
 
+const userStore = useUserStore()
+onShow(() => {
+  if (!userStore.user) {
+    uni.navigateTo({
+      url: '/pages/login/index',
+    })
+  }
+})
 const pagingRef = ref<InstanceType<typeof zPaging> | null>(null)
 const dataList = ref<string[]>([])
 

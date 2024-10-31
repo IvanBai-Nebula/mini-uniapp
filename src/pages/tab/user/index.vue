@@ -46,9 +46,18 @@
 
 <script setup lang="ts">
 import { useClipboard } from '@/hooks'
+import { useUserStore } from '@/store'
 
 const { setClipboardData, getClipboardData } = useClipboard()
 
+const userStore = useUserStore()
+onShow(() => {
+  if (!userStore.user) {
+    uni.navigateTo({
+      url: '/pages/login/index',
+    })
+  }
+})
 // 复制
 const toCopy = async () => {
   await setClipboardData({ data: '1234567890' })

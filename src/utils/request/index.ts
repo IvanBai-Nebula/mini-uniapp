@@ -26,25 +26,33 @@ export function request<T = any>(config: HttpRequestConfig): Promise<T> {
   return new Promise((resolve) => {
     http.request(config).then((res: HttpResponse<IResponse<T>>) => {
       console.log('[ res ] >', res)
-      const { result } = res.data
-      resolve(result as T)
+      const data = res.data
+      resolve(data as T)
     })
   })
 }
 
-export function get<T = any>(config: HttpRequestConfig): Promise<T> {
+export function getRequest<T = any>(config: HttpRequestConfig): Promise<T> {
   return request({ ...config, method: 'GET' })
 }
 
-export function post<T = any>(config: HttpRequestConfig): Promise<T> {
+export function postRequest<T = any>(config: HttpRequestConfig): Promise<T> {
   return request({ ...config, method: 'POST' })
 }
 
-export function upload<T = any>(config: HttpRequestConfig): Promise<T> {
+export function putRequest<T = any>(config: HttpRequestConfig): Promise<T> {
+  return request({ ...config, method: 'PUT' })
+}
+
+export function deleteRequest<T = any>(config: HttpRequestConfig): Promise<T> {
+  return request({ ...config, method: 'DELETE' })
+}
+
+export function uploadRequest<T = any>(config: HttpRequestConfig): Promise<T> {
   return request({ ...config, method: 'UPLOAD' })
 }
 
-export function download<T = any>(config: HttpRequestConfig): Promise<T> {
+export function downloadRequest<T = any>(config: HttpRequestConfig): Promise<T> {
   return request({ ...config, method: 'DOWNLOAD' })
 }
 

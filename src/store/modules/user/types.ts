@@ -1,7 +1,8 @@
 export type RoleType = '' | '*' | 'user'
-export interface UserState {
-  user_id?: string;
-  user_name?: string;
+export interface User {
+  id?: string;
+  username?: string;
+  mobile?: string;
   avatar?: string;
   token?: string;
 }
