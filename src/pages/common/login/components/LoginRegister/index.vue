@@ -94,7 +94,7 @@
     <text class="title">
       快捷登陆
     </text>
-    <img class="login-icon" src="@/static/images/weixin.png" alt="" @click="quickLogin">
+    <img class="login-icon" src="../../../../../static/images/weixin.png" alt="" @click="quickLogin">
   </view>
 </template>
 
