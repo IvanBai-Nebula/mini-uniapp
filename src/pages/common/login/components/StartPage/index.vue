@@ -26,7 +26,7 @@ const startHandle = () => {
 
 <style lang='scss' scoped>
 .container {
-  @apply p-x-35rpx w-[90%];
+  @apply px-35rpx w-[90vw];
 
   .welcome {
     @apply h-25 line-height-25 text-8 font-bold;
@@ -53,7 +53,7 @@ const startHandle = () => {
   @apply fixed bottom-[-5px] w-full overflow-hidden;
 
   .img {
-    @apply relative w-[125%] h-1200rpx left-[-8%];
+    @apply relative w-[125vw] h-1000rpx left-[-8vw];
   }
 }
 </style>

@@ -19,7 +19,7 @@
           placeholder="请输入用户名"
         />
       </u-form-item>
-      <u-form-item prop="phone">
+      <u-form-item class="my-20rpx" prop="phone">
         <u-input
           v-model="form.phone"
           class="u-border-bottom"
@@ -277,7 +277,7 @@ const quickLogin = async () => {
   }
 
   .login-btn {
-    @apply flex items-center justify-center m-t-60rpx py-12rpx px-0 text-4 border-none c-white rounded-45rpx shadow-md;
+    @apply flex items-center justify-center mt-60rpx py-12rpx px-0 text-4 border-none c-white rounded-45rpx shadow-md;
 
     background-color: $primary;
 
