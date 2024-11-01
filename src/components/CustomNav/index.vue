@@ -21,8 +21,8 @@ function getSlotStyle() {
 
 <style scoped lang="scss">
 .nav-bar {
-  @apply relative h-12vh w-full bg-cover bg-center bg-no-repeat;
+  @apply relative h-15vh w-full bg-cover bg-center bg-no-repeat;
 
-  background-image: url("https://care-daily-1318382758.cos.ap-shanghai.myqcloud.com/nav-bg.jpg?versionId=MTg0NDUwMTM2MjQzMDYyNDM1ODU");
+  background-image: url("https://care-daily-1318382758.cos.ap-shanghai.myqcloud.com/nav-bg-light.png");
 }
 </style>
