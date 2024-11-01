@@ -60,7 +60,7 @@
         </text>
         <text class="i-mdi-login ml-5rpx" />
       </button>
-      <view class="alternative" @tap="register = !register">
+      <view class="alternative" @tap="registerChange">
         <text v-if="register">
           已注册，去登录
         </text>
@@ -181,6 +181,11 @@ const getCode = async () => {
   else {
     uni.$u.toast('倒计时结束后再发送')
   }
+}
+
+const registerChange = () => {
+  register.value = !register.value
+  formRef.value?.clearValidate()
 }
 
 // 同意协议

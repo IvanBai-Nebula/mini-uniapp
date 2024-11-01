@@ -9,7 +9,7 @@
 import { useScreenHeight } from '@/utils'
 
 const { minHeight } = useScreenHeight() // 获取屏幕高度
-const pageVisible: Ref<boolean> = ref(false) // 页面可见性状态
+const pageVisible: Ref<boolean> = ref(true) // 页面可见性状态
 
 // 更新页面可见性
 const visibleChange = (value: boolean) => {
