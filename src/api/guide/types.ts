@@ -28,3 +28,11 @@ export interface ListResult {
   list: Array<ListItem>;
   quiz_set: number;
 }
+
+export interface QuizListParams {
+  quiz_set: number;
+}
+
+export interface QuizListResult {
+
+}

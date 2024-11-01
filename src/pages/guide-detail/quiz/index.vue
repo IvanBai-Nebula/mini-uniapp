@@ -1,37 +1,52 @@
 <template>
-  <!--  <view class="nav-bar" :style="{ paddingTop: `${safeAreaInsets?.top || 0}px` }"> -->
-  <!--    <SonTop /> -->
-  <!--    <SonBody /> -->
-  <!--    <SonFooter /> -->
-  <!--    <view class="bg"> -->
-  <!--      <image class="bg-img" src="@/static/images/top-bar.png" /> -->
-  <!--    </view> -->
-  <!--  </view> -->
-  <custom-nav />
+  <custom-nav>
+    <SonTop />
+  </custom-nav>
+  <SonBody :quiz-list="quizList" />
+  <SonFooter />
 </template>
 
 <script setup lang="ts">
-// const { safeAreaInsets } = uni.getSystemInfoSync()
+import SonTop from './components/ProgressNav/index.vue'
+import SonBody from './components/Content/index.vue'
+import SonFooter from './components/Actions/index.vue'
+
+const props = defineProps({
+  quizSet: {
+    type: Number,
+    required: true,
+  },
+})
+const quizList = ref([])
+
+onMounted(async () => {
+  const res = await getQuizSet({ quiz_set: props.quizSet })
+  quizList.value = res.list
+})
 </script>
 
 <style scoped lang="scss">
-//.nav-bar {
-//  position: relative;
-//
-//  .content {
-//    position: relative;
-//    z-index: 1; /* 设置子组件在背景图片之上 */
-//  }
-//
-//  .bg {
-//    .bg-img {
-//      @apply w-full;
-//      position: absolute;
-//      height: 12%;
-//      top: 0;
-//      object-fit: cover;
-//      z-index: -10; /* 设置背景图片在子组件之下 */
-//    }
-//  }
-// }
+.nav-bar {
+  position: relative;
+  display: flex; /* 使用flex布局以便更好控制子组件 */
+  flex-direction: column; /* 让子组件纵向排列 */
+  align-items: stretch; /* 让子组件占满整个宽度 */
+
+  .content {
+    position: relative;
+    z-index: 1; /* 设置子组件在背景图片之上 */
+  }
+
+  .bg {
+    .bg-img {
+      @apply w-full;
+
+      position: absolute; /* 设置为绝对定位 */
+      top: 0; /* 从顶端开始 */
+      z-index: -1;
+      height: 30%;
+      object-fit: cover; /* 图片自适应覆盖 */
+    }
+  }
+}
 </style>
