@@ -1,4 +1,5 @@
 import * as CommonApi from './common'
 import * as UserApi from './user'
+import * as GuideApi from './guide'
 
-export { CommonApi, UserApi }
+export { CommonApi, GuideApi, UserApi }
