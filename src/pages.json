@@ -15,12 +15,6 @@
       }
     },
     {
-      path: "pages/tab/guide/index",
-      "style": {
-        "navigationStyle": "custom"
-      }
-    },
-    {
       "path": "pages/tab/list/index",
       "style": {
         "navigationBarTitleText": "列表"
@@ -31,7 +25,13 @@
       "style": {
         "navigationStyle": "custom"
       }
-    }
+    },
+    {
+      "path": "pages/tab/guide/index",
+      "style": {
+        "navigationStyle": "custom",
+      }
+    },
   ],
   "subPackages": [
     {
@@ -80,8 +80,9 @@
       },
       {
         "pagePath": "pages/tab/guide/index",
-        "text": "照护指导"
+        "text": "指导"
       },
+
       {
         "pagePath": "pages/tab/list/index",
         "text": "列表"

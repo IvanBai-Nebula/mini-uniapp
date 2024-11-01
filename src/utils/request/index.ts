@@ -23,11 +23,14 @@ export function setupRequest() {
 }
 
 export function request<T = any>(config: HttpRequestConfig): Promise<T> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     http.request(config).then((res: HttpResponse<IResponse<T>>) => {
       console.log('[ res ] >', res)
       const data = res.data
       resolve(data as T)
+    }).catch((err: any) => {
+      console.log('[ err ] >', err)
+      reject(err)
     })
   })
 }
