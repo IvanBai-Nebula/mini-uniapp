@@ -23,6 +23,11 @@ export default {
     'uni_modules/*',
   ],
   rules: {
+    'selector-class-pattern': null, // 允许任意命名格式
+    'no-empty-source': null, // 允许空文件
+    'declaration-block-single-line-max-declarations': null, // 允许多于一个声明
+    'at-rule-no-unknown': null, // 忽略不认识的 at-rule
+    'number-max-precision': null, // 允许数字超过四位小数
     'import-notation': 'string',
     'unit-no-unknown': [true, { ignoreUnits: ['rpx'] }],
     'no-descending-specificity': null,

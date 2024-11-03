@@ -8,9 +8,9 @@
         手机号码登录
       </text>
     </view>
-    <u-form ref="formRef" :model="form" :rules="rules">
-      <u-form-item v-if="register" prop="username">
-        <u-input
+    <up-form ref="formRef" :model="form" :rules="rules">
+      <up-form-item v-if="register" prop="username">
+        <up-input
           v-model="form.username"
           class="u-border-bottom"
           border="none"
@@ -18,9 +18,9 @@
           type="text"
           placeholder="请输入用户名"
         />
-      </u-form-item>
-      <u-form-item class="my-20rpx" prop="phone">
-        <u-input
+      </up-form-item>
+      <up-form-item class="my-20rpx" prop="phone">
+        <up-input
           v-model="form.phone"
           class="u-border-bottom"
           border="none"
@@ -28,10 +28,10 @@
           type="number"
           placeholder="请输入手机号"
         />
-      </u-form-item>
-      <u-form-item prop="code">
+      </up-form-item>
+      <up-form-item prop="code">
         <view class="u-border-bottom flex">
-          <u-input
+          <up-input
             v-model="form.code"
             border="none"
             font-size="17"
@@ -40,16 +40,16 @@
           >
             <template #suffix>
               <u-code ref="uCodeRef" @change="codeChange" />
-              <u-button
+              <up-button
                 :text="tips"
                 :plain="true"
                 style="height: 20px;background-color: transparent;border: none;"
                 @click="getCode"
               />
             </template>
-          </u-input>
+          </up-input>
         </view>
-      </u-form-item>
+      </up-form-item>
 
       <button class="login-btn" :style="[inputStyle]" @tap="submit">
         <text v-if="register">
@@ -69,7 +69,7 @@
         </text>
         <text class="i-mdi:chevron-right" />
       </view>
-    </u-form>
+    </up-form>
   </view>
   <view class="hint">
     <up-radio-group
@@ -261,6 +261,14 @@ const quickLogin = async () => {
   loginSuccess()
 }
 </script>
+
+<style lang="scss">
+.login-form-wrap {
+  .u-form-item__body__right__message {
+    margin: 0 !important;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .login-form-wrap {

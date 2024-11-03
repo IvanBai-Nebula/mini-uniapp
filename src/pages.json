@@ -15,9 +15,9 @@
       }
     },
     {
-      "path": "pages/tab/list/index",
+      "path": "pages/tab/community/index",
       "style": {
-        "navigationBarTitleText": "列表"
+        "navigationStyle": "custom"
       }
     },
     {
@@ -31,7 +31,7 @@
       "style": {
         "navigationStyle": "custom",
       }
-    },
+    }
   ],
   "subPackages": [
     {
@@ -48,15 +48,37 @@
       ]
     },
     {
-      "root": "pages/guide-detail",
+      "root": "pages/tab/guide/subpages",
       "pages": [
         {
           "path": "quiz/index",
           "style": {
-            "navigationStyle": "custom",
-            "navigationBarTextStyle": "white"
+            "navigationStyle": "custom"
           }
-        }
+        },
+      ]
+    },
+    {
+      "root": "pages/tab/community/subpages",
+      "pages": [
+        {
+          "path": "detail/index",
+          "style": {
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "release/index",
+          "style": {
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "search/index",
+          "style": {
+            "navigationStyle": "custom"
+          }
+        },
       ]
     }
   ],
@@ -66,30 +88,49 @@
       "packages": [
         "pages/common"
       ]
-    }
+    },
+    "pages/tab/guide/index": {
+      "network": "all",
+      "packages": [
+        "pages/tab/guide/subpages"
+      ]
+    },
+    "pages/tab/community/index": {
+      "network": "all",
+      "packages": [
+        "pages/tab/community/subpages"
+      ]
+    },
   },
   "tabBar": {
     "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
+    "selectedColor": "#FF5959",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/tab/home/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "static/images/tab/home.png",
+        "selectedIconPath": "static/images/tab/home-a.png"
       },
       {
         "pagePath": "pages/tab/guide/index",
-        "text": "指导"
+        "text": "照护指导",
+        "iconPath": "static/images/tab/guide.png",
+        "selectedIconPath": "static/images/tab/guide-a.png"
       },
-
       {
-        "pagePath": "pages/tab/list/index",
-        "text": "列表"
+        "pagePath": "pages/tab/community/index",
+        "text": "健康社区",
+        "iconPath": "static/images/tab/community.png",
+        "selectedIconPath": "static/images/tab/community-a.png"
       },
       {
         "pagePath": "pages/tab/user/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "/static/images/tab/user.png",
+        "selectedIconPath": "/static/images/tab/user-a.png"
       }
     ]
   },

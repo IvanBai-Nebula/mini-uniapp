@@ -33,6 +33,21 @@ export interface QuizListParams {
   quiz_set: number;
 }
 
-export interface QuizListResult {
+export interface Option {
+  option: string;
+  answer: string;
+  score: number;
+}
 
+export interface Question {
+  id: number;
+  question: string;
+  options: Array<Option>;
+}
+
+export interface QuizListResult {
+  title: string;
+  description: string;
+  img: string;
+  questions: Array<Question>;
 }
