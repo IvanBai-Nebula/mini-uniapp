@@ -58,6 +58,8 @@
 import { useUserStore } from '@/store'
 import { newsList } from '@/utils'
 import InfoList from './components/InfoList/index.vue'
+import { postPostList } from '@/api/community'
+import type { PostListParams } from '@/api/community/type'
 
 const userStore = useUserStore()
 const avatar = userStore.user?.avatar || ''
@@ -68,6 +70,21 @@ const avatar = userStore.user?.avatar || ''
 //     })
 //   }
 // })
+const mode = ref<string>('recommend') // 模式
+const page = ref<number>(1) // 页码
+const perPage = ref<number>(10) // 每页数量
+
+onMounted(async () => {
+  const params: PostListParams = {
+    mode: mode.value,
+    pagination: {
+      page: page.value,
+      per_page: perPage.value,
+    },
+  }
+  const res = await postPostList({ ...params })
+  console.log(res)
+})
 
 const handleSearch = () => {
   uni.navigateTo({

@@ -1,4 +1,5 @@
 // 动态列表
+
 const newsList = [{
   list: [{
     userPic: '/static/images/header/01.svg', // 头像
