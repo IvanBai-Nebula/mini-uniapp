@@ -29,7 +29,7 @@
     {
       "path": "pages/tab/guide/index",
       "style": {
-        "navigationStyle": "custom",
+        "navigationStyle": "custom"
       }
     }
   ],
