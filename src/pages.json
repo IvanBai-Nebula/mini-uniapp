@@ -120,9 +120,10 @@
         "iconPath": "static/images/tab/guide.png",
         "selectedIconPath": "static/images/tab/guide-a.png"
       },
+
       {
         "pagePath": "pages/tab/community/index",
-        "text": "健康社区",
+        "text": "健康互动",
         "iconPath": "static/images/tab/community.png",
         "selectedIconPath": "static/images/tab/community-a.png"
       },

@@ -20,47 +20,48 @@
         <up-icon name="arrow-right" color="#969799" />
       </view>
     </view>
+    <!--
+        //<view class="mt-20rpx bg-white">   //支付用不到
+        ////  <up-cell-group>
+        ////    <up-cell icon="rmb-circle" title="支付" is-link />
+        //// </up-cell-group>
+        ////</view>
+    -->
 
-    <view class="mt-20rpx bg-white">
-      <up-cell-group>
-        <up-cell icon="rmb-circle" title="支付" is-link />
-      </up-cell-group>
-    </view>
+        <view class="mt-20rpx bg-white">
+          <up-cell-group>
+            <up-cell icon="star" title="收藏" is-link />
+            <up-cell icon="photo" title="相册" is-link />
+            <up-cell icon="coupon" title="卡券" is-link />
+            <up-cell icon="heart" title="关注" is-link />
+          </up-cell-group>
+        </view>
 
-    <view class="mt-20rpx bg-white">
-      <up-cell-group>
-        <up-cell icon="star" title="收藏" is-link />
-        <up-cell icon="photo" title="相册" is-link />
-        <up-cell icon="coupon" title="卡券" is-link />
-        <up-cell icon="heart" title="关注" is-link />
-      </up-cell-group>
-    </view>
+        <view class="mt-20rpx bg-white">
+          <up-cell-group>
+            <up-cell icon="setting" title="设置" is-link />
+          </up-cell-group>
+        </view>
+      </view>
+    </template>
 
-    <view class="mt-20rpx bg-white">
-      <up-cell-group>
-        <up-cell icon="setting" title="设置" is-link />
-      </up-cell-group>
-    </view>
-  </view>
-</template>
+    <script setup lang="ts">
+    import { useClipboard } from '@/hooks'
 
-<script setup lang="ts">
-import { useClipboard } from '@/hooks'
+    const { setClipboardData, getClipboardData } = useClipboard()
 
-const { setClipboardData, getClipboardData } = useClipboard()
-
-// const userStore = useUserStore()
-// onShow(() => {
-//   if (!userStore.user) {
-//     uni.navigateTo({
-//       url: '/pages/login/index',
-//     })
-//   }
-// })
-// 复制
-const toCopy = async () => {
-  await setClipboardData({ data: '1234567890' })
-  const data = await getClipboardData()
-  console.log('[ data ] >', data)
-}
-</script>
+    // const userStore = useUserStore()
+    // onShow(() => {
+    //   if (!userStore.user) {
+    //     uni.navigateTo({
+    //       url: '/pages/login/index',
+    //     })
+    //   }
+    // })
+    // 复制
+    const toCopy = async () => {
+      await setClipboardData({ data: '1234567890' })
+      const data = await getClipboardData()
+      console.log('[ data ] >', data)
+    }
+    </script>
