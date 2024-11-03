@@ -27,6 +27,12 @@
       }
     },
     {
+      "path": "pages/tab/nurse/nurse",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/tab/guide/index",
       "style": {
         "navigationStyle": "custom"
@@ -120,7 +126,12 @@
         "iconPath": "static/images/tab/guide.png",
         "selectedIconPath": "static/images/tab/guide-a.png"
       },
-
+      {
+        "pagePath": "pages/tab/nurse/nurse",
+        "text": "自我护理",
+        "iconPath": "static/images/tab/nurse.png",
+        "selectedIconPath": "static/images/tab/nurse-a.png"
+      },
       {
         "pagePath": "pages/tab/community/index",
         "text": "健康互动",
