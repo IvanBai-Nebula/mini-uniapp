@@ -264,8 +264,10 @@ const quickLogin = async () => {
 
 <style lang="scss">
 .login-form-wrap {
-  .u-form-item__body__right__message {
-    margin: 0 !important;
+  ::v-deep .u-form-item {
+    .u-form-item__body__right__message {
+      margin: 0 !important;
+    }
   }
 }
 </style>

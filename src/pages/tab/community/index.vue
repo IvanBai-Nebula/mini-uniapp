@@ -71,13 +71,17 @@ const avatar = userStore.user?.avatar || ''
 
 const handleSearch = () => {
   uni.navigateTo({
-    url: '/pages/search/index',
+    url: '/pages/tab/community/subpages/search/index',
+
   })
 }
 
 const handlePublish = () => {
   uni.navigateTo({
-    url: '/pages/publish/index',
+    url: '/pages/tab/community/subpages/release/index',
+    success: (res) => {
+      console.log(res)
+    },
   })
 }
 
