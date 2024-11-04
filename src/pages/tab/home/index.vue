@@ -125,11 +125,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 100%;
-  height: 100%;
-  overflow: hidden;
   background-color: #e8f2f8;
-  padding: 10px;
+  padding: 20px;
+  height: 100vh;
 }
 
 .title {
@@ -139,9 +137,9 @@ export default {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  width: 100%;
   margin-bottom: 20px;
 }
 
@@ -151,33 +149,6 @@ export default {
   border-radius: 8px;
   padding: 15px;
   background-color: #ffffff;
-  width: 130px;
-}
-
-.icon {
-  width: 50px;
-  height: auto;
-}
-
-.bottom-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-}
-
-.bottom-item {
-  text-align: center;
-  margin: 10px;
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  padding: 10px;
-  background-color: #ffffff;
-  width: 100px;
-}
-
-.bottom-item img {
-  width: 40px;
-  height: auto;
-}
+  transition: background-color 0.3s;
+  position: relative; /* 以便放置图
 </style>
