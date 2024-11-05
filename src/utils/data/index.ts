@@ -1,4 +1,86 @@
 // 动态列表
+const courseList = [{
+  list: [{
+    id: 1,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 2,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 3,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 4,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 5,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }],
+}, {
+  list: [{
+    id: 6,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 7,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 8,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 9,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 10,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }],
+}, {
+  list: [{
+    id: 11,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 12,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 13,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 14,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }, {
+    id: 15,
+    cover: '/static/images/list/01.svg',
+    title: '吞咽障碍护理',
+    learn_record: 0,
+  }],
+}]
 
 const newsList = [{
   list: [{
@@ -835,6 +917,7 @@ const feedbackList = [{
 
 export {
   chatList,
+  courseList,
   detailInfo,
   feedbackList,
   friendList,

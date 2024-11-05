@@ -57,6 +57,12 @@
       "root": "pages/tab/guide/subpages",
       "pages": [
         {
+          "path": "courseDetail/index",
+          "style": {
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "quiz/index",
           "style": {
             "navigationStyle": "custom"

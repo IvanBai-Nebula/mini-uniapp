@@ -1,5 +1,6 @@
 <template>
   <view class="community">
+    <!-- 顶部功能栏 -->
     <up-navbar placeholder>
       <template #left>
         <view class="avatar">
@@ -15,6 +16,7 @@
         <view class="iconfont i-mdi:text-box-edit" @click="handlePublish()" />
       </template>
     </up-navbar>
+    <!-- 导航栏 -->
     <up-sticky bg-color="#fff">
       <up-tabs
         :list="tabList" :current="tabIndex" line-color="#dc5095"
@@ -49,7 +51,7 @@
     </swiper>
     <!-- 回到顶部 -->
     <view v-if="scrollTop[tabIndex] > 400" class="go-top" @click="goTop">
-      <up-icon color="#01906c" name="arrow-up" size="24" />
+      <up-icon color="#dc5095" name="arrow-up" size="24" />
     </view>
   </view>
 </template>
@@ -58,8 +60,6 @@
 import { useUserStore } from '@/store'
 import { newsList } from '@/utils'
 import InfoList from './components/InfoList/index.vue'
-import { postPostList } from '@/api/community'
-import type { PostListParams } from '@/api/community/type'
 
 const userStore = useUserStore()
 const avatar = userStore.user?.avatar || ''
@@ -70,20 +70,21 @@ const avatar = userStore.user?.avatar || ''
 //     })
 //   }
 // })
-const mode = ref<string>('recommend') // 模式
-const page = ref<number>(1) // 页码
-const perPage = ref<number>(10) // 每页数量
+const tabIndex = ref<number>(0)
+const tabList = [
+  { name: '最新' },
+  { name: '热门' },
+  { name: '专家' },
+  { name: 'AI助手' },
+]
+
+// const mode = ref<string>('recommend') // 模式
+// const page = ref<number>(1) // 页码
+// const perPage = ref<number>(10) // 每页数量
+
+const scrollView = ref<Array<number>>([])
 
 onMounted(async () => {
-  const params: PostListParams = {
-    mode: mode.value,
-    pagination: {
-      page: page.value,
-      per_page: perPage.value,
-    },
-  }
-  const res = await postPostList({ ...params })
-  console.log(res)
 })
 
 const handleSearch = () => {
@@ -102,29 +103,15 @@ const handlePublish = () => {
   })
 }
 
-const tabIndex = ref<number>(0)
-const tabList = [
-  { name: '推荐' },
-  { name: '最新' },
-  { name: '热门' },
-  { name: '专家' },
-]
-
-const scrollTops = reactive([0, 0, 0, 0, 0, 0])
-const scrollTop = reactive([0, 0, 0, 0, 0, 0])
+const scrollTops = reactive(Array.from({ length: tabList.length }).fill(0))
+const scrollTop = reactive(Array.from({ length: tabList.length }).fill(0))
 const loadStatus = ['loadmore', 'loadmore', 'loadmore', 'loadmore', 'loadmore', 'loadmore']
 const swiperIndex = ref<number>(0)
 const swiperList = reactive(newsList)
-onMounted(() => {
-  for (let i = 0; i < swiperList.length; i++) {
-    console.log(swiperList[i].list)
-  }
-})
 
 const changeTab = (item: { index: number }) => {
   tabIndex.value = item.index
   swiperIndex.value = item.index
-  console.log(swiperList)
 }
 const animationFinish = (e: { detail: { current: number } }) => {
   tabIndex.value = e.detail.current
@@ -211,7 +198,7 @@ const goTop = () => {
     }
 
     .nav-center {
-      @apply ml-20rpx;
+      @apply ml-20rpx w-400rpx;
     }
 
     .u-navbar__content {

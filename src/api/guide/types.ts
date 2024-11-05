@@ -1,53 +1,73 @@
+import type { PaginationParams, PaginationResult } from '@/api/common/types'
+
+// 导航栏标签
 export interface TabItem {
-  index: number;
-  name: string;
+  index: number; // 索引
+  name: string; // 名称
 }
 
-export interface TabsResult {
-  tabs: Array<TabItem>;
+// 导航栏标签列表结果
+export interface TabListResult {
+  list: Array<TabItem>;
 }
 
-export interface ListParams {
-  category: string;
+// 导航栏标签列表
+export type TabList = Array<TabItem>
+
+// 课程请求参数
+export interface CourseParams extends PaginationParams {
+  id: number;
 }
 
-export interface Progress {
-  current: number;
-  total: number;
-}
-
-export interface ListItem {
+// 课程
+export interface CourseListItem {
   id: number;
   title: string;
-  description: string;
-  img: string;
-  progress: Progress;
+  cover: string;
+  learn_record: number;
 }
 
-export interface ListResult {
-  list: Array<ListItem>;
-  quiz_set: number;
+// 课程列表请求结果
+export interface CourseResult {
+  list: Array<CourseListItem>;
+  pagination: PaginationResult;
 }
 
-export interface QuizListParams {
-  quiz_set: number;
+// 课程列表
+export type CourseList = Array<CourseListItem>
+export type AllCourseList = Array<CourseResult>
+
+// 课程详情请求参数
+export interface CourseDetailParams {
+  id: number;
 }
 
+// 题库请求参数
+export interface QuizParams {
+  quiz_set: number; // 题库编号
+}
+
+// 选项
 export interface Option {
-  option: string;
-  answer: string;
-  score: number;
+  opt_num: string; // 编号
+  answer: string; // 答案
+  score: number; // 分值
 }
 
-export interface Question {
-  id: number;
-  question: string;
-  options: Array<Option>;
+// 问题
+export interface QuizListItem {
+  id: number; // 题目id
+  question: string; // 题目内容
+  options: Array<Option>; // 选项列表
 }
 
-export interface QuizListResult {
-  title: string;
-  description: string;
-  img: string;
-  questions: Array<Question>;
+// 题库请求结果
+export interface QuizResult {
+  title: string; // 题库名称
+  des: string; // 题库描述
+  img: string; // 题库封面
+  list: Array<QuizListItem>; // 题目列表
 }
+
+// 题库列表
+export type QuizList = Array<QuizListItem>

@@ -1,6 +1,6 @@
 <template>
   <!-- 资讯列表 -->
-  <view class="info-list animate__animated animate__fadeInLeft animate__fast wrap-card border-b">
+  <view class="course-list animate__animated animate__fadeInLeft animate__fast wrap-card border-b">
     <!-- 头像栏 -->
     <view class="flex flex-row items-center justify-between">
       <!-- 头像 -->
@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.info-list {
+.course-list {
   .img-header {
     width: 100rpx;
     height: 100rpx;

@@ -1,3 +1,5 @@
+import type { PaginationParams } from '@/api/common/types'
+
 export interface InfoNum {
   index: number; // 0：没有操作，1：顶，2：踩
   smileNum: number; // 微笑数
@@ -25,14 +27,8 @@ export interface PostListResult {
 
 export type PostList = PostListResult
 
-// 列表分页参数
-export interface Pagination {
-  page: number; // 页码
-  per_page: number; // 每页数量
-}
-
 // 列表请求参数
 export interface PostListParams {
   mode: string; // 列表类型，hot：热门，new：最新
-  pagination: Pagination;
+  pagination: PaginationParams;
 }
