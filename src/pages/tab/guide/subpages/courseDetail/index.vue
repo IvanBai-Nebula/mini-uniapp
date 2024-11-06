@@ -1,6 +1,6 @@
 <template>
   <view class="course-detail">
-    <up-navbar-mini
+    <u-navbar-mini
       :auto-back="true"
       bg-color="transparent"
     >
@@ -11,7 +11,7 @@
           color="black"
         />
       </template>
-    </up-navbar-mini>
+    </u-navbar-mini>
     <image
       class="course-detail-bg"
       src="https://care-daily-test-1318382758.cos.ap-shanghai.myqcloud.com/course-detail-bg.jpg"
@@ -40,32 +40,57 @@
       </view>
     </view>
     <view class="course-detail-content">
-      <up-tabs
-        :list="tabList"
-        :current="tabIndex"
-        line-color="#dc5095"
-        :active-style="{ color: '#dc5095' }"
-        :inactive-style="{ color: '#909399' }"
-        line-width="30"
-        :scrollable="false"
-        @change="changeTab"
-      />
+      <u-sticky>
+        <up-tabs
+          :list="tabList"
+          :current="tabIndex"
+          line-color="#dc5095"
+          :active-style="{ color: '#dc5095' }"
+          :inactive-style="{ color: '#d0d1d9' }"
+          line-width="30"
+          :scrollable="false"
+          @change="changeTab"
+        />
+      </u-sticky>
       <view v-if="tabIndex === 0">
-        <up-list
-          @srcolltolower="scrollToLower"
-        >
-          <up-list-item
+        <u-list>
+          <u-list-item
             v-for="(item, index) in knowledgeList"
             :key="index"
-            :item="item"
-          />
-        </up-list>
+          >
+            <u-cell
+              :title="item.title"
+              :border="false"
+              :custom-style="{ height: '120rpx' }"
+            >
+              <template #icon>
+                {{ index < 10 ? `0${index + 1}` : index + 1 }}
+              </template>
+              <template #label>
+                <view class="m-t-20rpx flex font-size-30rpx c-#d0d1d9">
+                  <div class="i-mdi:eye-outline" />
+                  <text class="m-l-10rpx m-r-30rpx font-size-25rpx">
+                    2.5k
+                  </text>
+                </view>
+              </template>
+              <template #value>
+                <button class="course-btn" :style="{ backgroundColor: colorList[item.learn_record] }">
+                  {{ recordList[item.learn_record] }}
+                </button>
+              </template>
+            </u-cell>
+          </u-list-item>
+        </u-list>
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
+const colorList = ['#dc5095', '#eb921a', '#5bba51']
+const recordList = ['开始学习', '已学习', '学习中']
+
 const tabList = reactive([
   { name: '知识要点' },
   { name: '教学视频' },
@@ -77,10 +102,21 @@ const changeTab = (item: { index: number }) => {
   tabIndex.value = item.index
 }
 const knowledgeList = reactive([
-  { title: '入口要求' },
-  { title: '室内活动空间' },
-  { title: '卧室环境要求' },
-  { title: '卫生间的设备' },
+  { title: '第一节：入口要求', learn_record: 1 },
+  { title: '第二节：室内活动空间', learn_record: 1 },
+  { title: '第三节：卧室环境要求', learn_record: 2 },
+  { title: '第四节：卫生间的设备', learn_record: 0 },
+  { title: '第五节：厨房空间要求', learn_record: 0 },
+  { title: '第六节：阳台空间要求', learn_record: 0 },
+  { title: '第七节：餐厅空间要求', learn_record: 0 },
+  { title: '第八节：洗手间空间要求', learn_record: 0 },
+  { title: '第九节：卫生间的设备', learn_record: 0 },
+  { title: '第十节：厨房空间要求', learn_record: 0 },
+  { title: '第十一节：阳台空间要求', learn_record: 0 },
+  { title: '第十二节：餐厅空间要求', learn_record: 0 },
+  { title: '第十三节：洗手间空间要求', learn_record: 0 },
+  { title: '第十四节：卫生间的设备', learn_record: 0 },
+  { title: '第十五节：厨房空间要求', learn_record: 0 },
 ])
 </script>
 
@@ -98,6 +134,7 @@ page > view > view > view > view.u-navbar-mini__content.data-v-128ec6da {
 <style lang="scss">
 .course-detail {
   position: relative;
+  background-color: white;
 
   .course-detail-bg {
     position: absolute;
@@ -152,12 +189,33 @@ page > view > view > view > view.u-navbar-mini__content.data-v-128ec6da {
     position: fixed;
     top: 56%;
     z-index: 2;
+    overflow-y: auto;
     width: 100%;
-    height: 40vh;
+    height: 44vh;
     color: black;
     background-color: white;
-    border-top-left-radius: 60rpx;
-    border-top-right-radius: 60rpx;
+    border-radius: 60rpx 60rpx 0 0;
+
+    .u-list {
+      height: 600rpx !important;
+
+      ::v-deep .u-cell {
+        .u-cell__left-icon-wrap {
+          margin-right: 30rpx !important;
+          font-size: 40rpx !important;
+          color: #d0d1d9 !important;
+        }
+
+        .u-cell__label {
+          color: #d0d1d9 !important;
+        }
+      }
+
+      .course-btn {
+        @apply m-t-20rpx m-r-20rpx h-60rpx w-130rpx p-0 font-size-25rpx c-white rounded-45rpx line-height-60rpx ;
+      }
+    }
+
   }
 }
 </style>

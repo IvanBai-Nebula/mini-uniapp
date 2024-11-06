@@ -25,7 +25,6 @@ const colorList = ['#dc5095', '#eb921a', '#5bba51']
 const recordList = ['开始学习', '已学习', '学习中']
 
 const goDetail = () => {
-  console.log('触发跳转')
   uni.navigateTo({
     url: `/pages/tab/guide/subpages/courseDetail/index?id=${props.item.id}`,
   })
