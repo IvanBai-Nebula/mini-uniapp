@@ -1,269 +1,186 @@
 <template>
-  <custom-nav>
-    <view class="top-container">
-      <text class="i-mdi:close h-45rpx w-45rpx text-#1C234C" />
-      <view class="abv">
-        {{ current < 10 ? `0${current}` : current }}/{{ total }}题
-      </view>
-      <view style="width: 40%;">
-        <up-line-progress :percentage="`${percentageCurrent}`" :show-text="false" />
-      </view>
-    </view>
-  </custom-nav>
+  <view class="quiz">
+    <up-navbar
 
-  <view class="question-container">
-    <view class="question-type">
-      单选题
-    </view>
-    <view class="question-content">
-      {{ currentQuestion.question }}
-    </view>
-    <view class="options">
-      <view
-        v-for="(option, index) in currentQuestion.options"
-        :key="index"
-        class="option-item"
-        :class="{ selected: selectedOption === index }"
-        @click="selectOption(index)"
-      >
-        {{ option.option }}  {{ option.answer }}
+      auto-back placeholder
+    >
+      <template #center>
+        <view class="m-r-100rpx flex">
+          <view class="m-r-20rpx font-bold">
+            {{
+              currentIndex < 10 ? `0${currentIndex}` : currentIndex
+            }}/{{ quizList.length < 10 ? `0${quizList.length}` : quizList.length }} 题
+          </view>
+          <view class="w-45vw">
+            <up-line-progress :percentage="currentIndex / quizList.length * 100" :show-text="false" />
+          </view>
+        </view>
+      </template>
+    </up-navbar>
+    <view class="quiz-content">
+      <view class="m-b-80rpx flex items-center">
+        <text class="quiz-type">
+          单选题
+        </text>
+        <text class="quiz-question">
+          题目：{{ quizList[currentIndex - 1].question }} &nbsp;(&nbsp;&nbsp;&nbsp;&nbsp;)
+        </text>
+      </view>
+
+      <view class="quiz-options">
+        <view
+          v-for="(option, index) in quizList[currentIndex - 1].options"
+          :key="index"
+          class="custom-option"
+        >
+          <text class="m-l-40rpx">
+            {{ convertNumToLetters(option.opt_num) }}、
+          </text>
+          <text>
+            {{ option.answer }}
+          </text>
+        </view>
+      </view>
+      <view class="quiz-btn">
+        <button class="m-l-150rpx" @click="changeQuiz(-1)">
+          上一题
+        </button>
+        <button class="m-r-150rpx" @click="changeQuiz(1)">
+          {{ currentIndex === quizList.length ? '完成' : '下一题' }}
+        </button>
       </view>
     </view>
-  </view>
-  <view class="son-footer">
-    <button class="previous-btn" @click="back()">
-      上一题
-    </button>
-    <button class="next-btn" @click="next()">
-      下一题
-    </button>
+    <up-popup
+      :show="showPopup"
+      :round="10" mode="center"
+      :close-on-click-overlay="false"
+    >
+      <view class="custom-popup">
+        <div class="close-icon i-mdi:close text-35rpx" @click="close" />
+        <text class="m-x-20rpx m-t-80rpx text-center text-30rpx">
+          恭喜你完成了本节知识的练习题！点击完成返回课程章节页。
+        </text>
+        <view class="custom-popup-btn">
+          <button @click="goBack">
+            完成
+          </button>
+        </view>
+      </view>
+    </up-popup>
   </view>
 </template>
 
-<script setup lang="ts">
-defineProps({
-  quizSet: {
-    type: Number,
-    required: true,
-  },
-})
-const quizSet = ref<number>(0)
+<script lang='ts' setup>
+import { postQuizSet } from '@/api/guide'
+import type { QuizList } from '@/api/guide/types'
 
-onLoad((option) => {
-  // 获取传参
-  quizSet.value = option?.quizSet
+const QuizSetId = ref<number>(0)
+onLoad((options: any) => {
+  QuizSetId.value = options.chapterId
 })
 
-const quizList = ref<QuizResult>({
-  title: '',
-  description: '',
-  img: '',
-  questions: [],
-})
-
+const quizList = ref<QuizList>([])
 onMounted(async () => {
-  useLoading().showLoading()
-  // 获取题目列表
-  setTimeout(async () => {
-    const { title, img, list } = await postQuiz({ quiz_set: quizSet.value })
-    quizList.value = { title, des: description, img, list }
-    useLoading().hideLoading()
-  }, 500)
+  const res = await postQuizSet({ quiz_set_id: QuizSetId.value })
+  quizList.value = res.list
 })
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-const questions = ref([
-  {
-    content: '如果擎天柱看到4S店会想到什么？（ ）',
-    options: [
-      { label: 'A、这里是汽车人游乐园', value: 'A' },
-      { label: 'B、我们在贩卖人口', value: 'B' },
-      { label: 'C、这里是变形金刚聚集地', value: 'C' },
-      { label: 'D、这里是人民公园相亲角', value: 'D' },
-    ],
-  },
-  {
-    content: '变形金刚中最喜欢的角色是谁？（ ）',
-    options: [
-      { label: 'A、大黄蜂', value: 'A' },
-      { label: 'B、擎天柱', value: 'B' },
-      { label: 'C、光头强', value: 'C' },
-      { label: 'D、何炅（邪恶栀子花版）', value: 'D' },
-    ],
-  },
-  {
-    content: '上海最好的大学是？（ ）',
-    options: [
-      { label: 'A、上海外国语大学', value: 'A' },
-      { label: 'B、SISU', value: 'B' },
-      { label: 'C、上外', value: 'C' },
-      { label: 'D、Shanghai International Studys University ', value: 'D' },
-    ],
-  },
-  {
-    content: '中国最好的大学是？（ ）',
-    options: [
-      { label: 'A、上海外国语大学', value: 'A' },
-      { label: 'B、SISU', value: 'B' },
-      { label: 'C、上外', value: 'C' },
-      { label: 'D、Shanghai International Studys University ', value: 'D' },
-    ],
-  },
-  {
-    content: '世界最好的大学是？（ ）',
-    options: [
-      { label: 'A、上海外国语大学', value: 'A' },
-      { label: 'B、SISU', value: 'B' },
-      { label: 'C、上外', value: 'C' },
-      { label: 'D、Shanghai International Studys University ', value: 'D' },
-    ],
-  },
-  // 添加更多题目
-])
-// 当前题目号和总题目数
-const current = ref(1)
-const total = computed(() => quizList.value.questions.length)
+const currentIndex = ref<number>(1)
+const showPopup = ref<boolean>(false)
 
-// 获取当前题目的数据
-const currentQuestion = computed(() => {
-  return quizList.value.questions[current.value - 1]
-})
-
-const selectedOption = ref<number | null>(null) // 存储当前选中的选项的索引
-function selectOption(index: number) {
-  selectedOption.value = index
+const convertNumToLetters = (num: number): string | undefined => {
+  const mapping: { [key: number]: string } = {
+    1: 'A',
+    2: 'B',
+    3: 'C',
+    4: 'D',
+  }
+  return mapping[num] // 可以直接返回
 }
 
-function back() { // 上一题的方法
-  if (current.value > 1) {
-    uni.showToast({
-      title: '已跳转到上一题',
-      icon: 'none', // 不显示图标
-      duration: 1000, // 持续时间
-    })
-    current.value--
-    selectedOption.value = null // 重置选中的选项
-  }
-  else {
-    uni.showToast({
-      title: '这已经是第一题啦',
-      icon: 'none', // 不显示图标
-      duration: 1000, // 持续时间
-    })
-  }
-}
-// 下一题的方法
-function next() {
-  if (current.value < total.value) {
-    uni.showToast({
-      title: '已跳转到下一题',
-      icon: 'none', // 不显示图标
-      duration: 1000, // 持续时间
-    })
-    current.value++
-    selectedOption.value = null // 重置选中的选项
-  }
-  else {
-    uni.showToast({
-      title: '这已经是最后一题啦',
-      icon: 'none', // 不显示图标
-      duration: 1000, // 持续时间
-    })
-  }
+const close = () => {
+  showPopup.value = false
 }
 
-const percentageCurrent = computed(() => Math.round((current.value / total.value) * 100))
+const changeQuiz = (step: number) => {
+  if (step === 1 && currentIndex.value === quizList.value.length) {
+    showPopup.value = true
+    return
+  }
+  if (step === -1 && currentIndex.value === 1) {
+    uni.$u.toast('已经是第一题了')
+    return
+  }
+  currentIndex.value += step
+}
+
+const goBack = () => {
+  uni.navigateBack()
+}
 </script>
 
-<style scoped lang="scss">
-.nav-bar {
-  position: relative;
-  display: flex; /* 使用flex布局以便更好控制子组件 */
-  flex-direction: column; /* 让子组件纵向排列 */
-  align-items: stretch; /* 让子组件占满整个宽度 */
+<style lang='scss' scoped>
+.quiz {
+  .quiz-content {
+     @apply m-t-60rpx m-x-40rpx;
 
-  .content {
-    position: relative;
-    z-index: 1; /* 设置子组件在背景图片之上 */
-  }
+    .quiz-type {
+      @apply flex justify-center items-center h-50rpx w-100rpx text-25rpx font-bold c-white bg-#22BF57  rounded-tr-20rpx rounded-bl-20rpx;
+    }
 
-  .bg {
-    .bg-img {
-      @apply w-full;
+    .quiz-question {
+      @apply m-l-20rpx text-30rpx w-70vw;
+    }
 
-      position: absolute; /* 设置为绝对定位 */
-      top: 0; /* 从顶端开始 */
-      z-index: -1;
-      height: 30%;
-      object-fit: cover; /* 图片自适应覆盖 */
+    .quiz-options {
+      @apply m-x-40rpx text-30rpx;
+
+      .custom-option {
+        @apply m-y-50rpx flex items-center text-30rpx h-110rpx w-80vw rounded-10rpx bg-#F4F5F7;
+      }
+    }
+
+    .quiz-btn {
+      position: fixed;
+      right: 0; /* 确保宽度覆盖整个视口 */
+      bottom: 7%;
+      left: 0; /* 确保从左侧开始 */
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        @apply flex justify-center items-center text-25rpx border-none bg-#22BF57 c-white rounded-20rpx h-70rpx w-130rpx;
+      }
+
     }
   }
-}
 
-.son-footer {
-  position: fixed; /* 使用固定定位 */
-  right: 0; /* 确保宽度覆盖整个父组件 */
-  bottom: 0; /* 固定在底部 */
-  left: 0; /* 确保在左侧 */
-  display: flex; /* 使用flex布局 */
-  justify-content: space-between; /* 按钮之间均匀分布 */
-  padding: 10px; /* 内边距 */
-  background-color: #f9f9f9; /* 可选的背景色 */
-  border-top: 1px solid #e0e0e0; /* 可选的边框 */
-}
+  .custom-popup {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 450rpx;
+    height: 350rpx;
+    flex-direction: column;
 
-.question-number {
-  font-size: 16px;
-}
+    .close-icon {
+      position: absolute; /* 绝对定位 */
+      top: 10rpx; /* 距离顶部的距离，可根据需要调整 */
+      right: 10rpx; /* 距离右侧的距离，可根据需要调整 */
+      cursor: pointer; /* 设置鼠标悬停时的样式 */
+    }
 
-.question-container {
-  padding: 20px;
-  background-color: rgb(255 255 255);
-}
+    .custom-popup-btn {
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
 
-.question-type {
-  display: inline-block;
-  padding: 5px 10px;
-  margin-bottom: 10px;
-  color: #fff;
-  background-color: #23a455;
-  border-radius: 5px;
-}
+      button {
+        @apply flex justify-center items-center text-25rpx border-none bg-#22BF57 c-white rounded-20rpx h-70rpx w-130rpx;
+      }
+    }
+  }
 
-.question-content {
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.options {
-  display: flex;
-  padding-top: 20px;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.option-item {
-  padding: 15px;
-  font-size: 16px;
-  color: #333;
-  background: rgb(244 245 247 / 100%);
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-  cursor: pointer;
-}
-
-.option-item.selected {
-  background-color: #e6f7ff;
-  border-color: #1890ff;
-}
-
-.option-item:hover {
-  background-color: #f5f5f5;
-}
-
-.top-container {
-  @apply pt-13 pl-3 flex
 }
 </style>

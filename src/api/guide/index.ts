@@ -25,4 +25,4 @@ export const getCourseTabList = () => getRequest<GuideCourseTabListResult>({ url
 export const postCourseChapterList = (params: CourseChapterListParams) => postRequest<CourseChapterListResult>({ url: URL.courseChapterList, params })
 export const postChapterDetail = (params: ChapterDetailParams) => postRequest<ChapterDetailResult>({ url: URL.chapterDetail, params })
 export const postSectionDetail = (params: SectionDetailParams) => postRequest<SectionDetailResult>({ url: URL.sectionDetail, params })
-export const postQuiz = (params: QuizSetParams) => postRequest<QuizSetResult>({ url: URL.quizSet, params })
+export const postQuizSet = (params: QuizSetParams) => postRequest<QuizSetResult>({ url: URL.quizSet, params })

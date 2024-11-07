@@ -101,11 +101,11 @@
           :enable-play-gesture="true"
         />
       </view>
-      <view v-if="tabIndex === 2" class="m-x-20rpx m-t-40rpx">
-        <text class="font-size-30rpx">
+      <view v-if="tabIndex === 2" class="m-x-20rpx m-t-40rpx flex flex-col items-center justify-center">
+        <text class="quiz-text">
           完成了前面的学习快来进行简单的巩固测试吧，完成测试后将计入学习排行榜，与同学们一起分享学习心得!
         </text>
-        <button @click="goQuiz">
+        <button class="quiz-btn" @click="goQuiz">
           开始测试
         </button>
       </view>
@@ -166,7 +166,7 @@ const goSection = (item: any) => {
 
 const goQuiz = () => {
   uni.navigateTo({
-    url: '/pages/tab/guide/subpages/quiz/index',
+    url: `/pages/tab/guide/subpages/quiz/index?quizSetId=${quizSetId.value}`,
   })
 }
 </script>
@@ -265,6 +265,14 @@ page > view > view > view > view.u-navbar-mini__content.data-v-128ec6da {
       .course-btn {
         @apply m-t-20rpx m-r-20rpx h-60rpx w-130rpx p-0 font-size-25rpx c-white rounded-45rpx line-height-60rpx ;
       }
+    }
+
+    .quiz-text {
+      @apply m-x-40rpx font-size-30rpx leading-5 tracking-5rpx;
+    }
+
+    .quiz-btn {
+      @apply fixed bottom-7vh m-x-40rpx h-60rpx w-130rpx p-0 bg-#dc5095 c-white font-size-25rpx rounded-45rpx line-height-60rpx ;
     }
 
   }

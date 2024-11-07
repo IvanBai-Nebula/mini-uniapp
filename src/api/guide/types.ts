@@ -96,7 +96,7 @@ export interface SectionDetailResult {
 
 // 选项
 export interface Option {
-  opt_num: string; // 选项编号
+  opt_num: number; // 选项编号
   answer: string; // 答案
   score: number; // 分值
 }
@@ -108,9 +108,6 @@ export interface QuizItem {
   options: Array<Option>; // 选项列表
 }
 
-// 题列表
-export type QuizList = Array<QuizItem>
-
 // 题库请求参数
 export interface QuizSetParams {
   quiz_set_id: number; // 题库id
@@ -118,8 +115,8 @@ export interface QuizSetParams {
 
 // 题库请求结果
 export interface QuizSetResult {
-  title: string; // 题库名称
-  des: string; // 题库描述
-  img: string; // 题库封面
-  list: Array<QuizItem>; // 题目列表
+  list: QuizList; // 题目列表
 }
+
+// 题列表
+export type QuizList = Array<QuizItem>

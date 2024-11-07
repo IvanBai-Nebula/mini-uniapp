@@ -1,5 +1,5 @@
 <template>
-  <view class="knowledge">
+  <view class="quiz">
     <up-navbar
       placeholder
       @left-click="goBack"
@@ -22,7 +22,7 @@
         {{ sectionTitle }}
       </text>
     </view>
-    <view class="knowledge-content">
+    <view class="quiz-content">
       <view class="knowledge-img">
         <img
           style="max-width: 100%;max-height: 600rpx"
@@ -37,7 +37,7 @@
           margin="40rpx"
         />
       </view>
-      <view class="knowledge-text">
+      <view class="quiz-options">
         <u-cell-group
           :border="false"
         >
@@ -53,7 +53,7 @@
           </u-cell>
         </u-cell-group>
       </view>
-      <view class="knowledge-btn">
+      <view class="quiz-btn">
         <button class="m-l-150rpx" @click="changePage(-1)">
           上一页
         </button>
@@ -141,19 +141,19 @@ const goNext = () => {
 </script>
 
 <style lang='scss' scoped>
-.knowledge {
-  .knowledge-content {
+.quiz {
+  .quiz-content {
     .knowledge-img {
       display: flex;
       justify-content: center;
       margin-top: 50rpx;
     }
 
-    .knowledge-text {
+    .quiz-options {
       @apply m-x-40rpx text-30rpx;
     }
 
-    .knowledge-btn {
+    .quiz-btn {
       position: fixed;
       right: 0; /* 确保宽度覆盖整个视口 */
       bottom: 7%;
