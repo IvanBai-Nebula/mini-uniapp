@@ -7,7 +7,7 @@
       <template #left>
         <up-icon
           name="arrow-left"
-          size="16"
+          size="18"
           color="black"
         />
       </template>
@@ -18,24 +18,28 @@
     />
     <view class="course-detail-card">
       <text class="course-detail-title">
-        第一章 吞咽障碍管理知识
+        第{{ chapterIndex }}章 吞咽障碍管理知识
       </text>
       <view class="course-detail-info flex">
-        <div class="i-mdi:account-multiple-outline font-size-35rpx" />
-        <text class="number m-l-20rpx m-r-40rpx">
-          4.5k
-        </text>
-        <div class="i-mdi:thumb-up-outline font-size-33rpx" />
-        <text class="rate m-l-20rpx">
-          4.9分
-        </text>
+        <view v-show="watchedNum !== undefined">
+          <div class="i-mdi:account-multiple-outline font-size-35rpx" />
+          <text class="number m-l-20rpx m-r-40rpx">
+            {{ ((watchedNum ? watchedNum : 0) / 1000).toFixed(1) }}k
+          </text>
+        </view>
+        <view v-show="thumbNum !== undefined">
+          <div class="i-mdi:thumb-up-outline font-size-33rpx" />
+          <text class="rate m-l-20rpx">
+            {{ ((thumbNum ? thumbNum : 0) / 1000).toFixed(1) }}分
+          </text>
+        </view>
       </view>
       <view class="course-detail-desc">
         <text class="font-size-36rpx">
           课程简介
         </text>
         <text class="m-t-20rpx leading-normal">
-          六年级绘画课是一门注重实践，启发创意的艺术课程，本课程旨在通过系统的绘画学习，培养学生的观察力、想象力和创作力，让学生掌握基本的绘画技能和理论知识，从而能够欣赏并创作出具有个性和表现力的绘画作品。
+          {{ des }}
         </text>
       </view>
     </view>
@@ -55,7 +59,7 @@
       <view v-if="tabIndex === 0">
         <u-list>
           <u-list-item
-            v-for="(item, index) in knowledgeList"
+            v-for="(item, index) in sectionList"
             :key="index"
           >
             <u-cell
@@ -69,13 +73,17 @@
               <template #label>
                 <view class="m-t-20rpx flex font-size-30rpx c-#d0d1d9">
                   <div class="i-mdi:eye-outline" />
-                  <text class="m-l-10rpx m-r-30rpx font-size-25rpx">
-                    2.5k
+                  <text v-show="item.watched_num !== undefined" class="m-l-10rpx m-r-30rpx font-size-25rpx">
+                    {{ ((item.watched_num ? item.watched_num : 0) / 1000).toFixed(1) }}k
                   </text>
                 </view>
               </template>
               <template #value>
-                <button class="course-btn" :style="{ backgroundColor: colorList[item.learn_record] }">
+                <button
+                  class="course-btn"
+                  :style="{ backgroundColor: colorList[item.learn_record] }"
+                  @click="goCourse(item)"
+                >
                   {{ recordList[item.learn_record] }}
                 </button>
               </template>
@@ -83,11 +91,59 @@
           </u-list-item>
         </u-list>
       </view>
+      <view v-if="tabIndex === 1" class="m-t-40rpx flex items-center justify-center">
+        <video
+          :src="video"
+          :page-gesture="true"
+          :show-loading="true"
+          :enable-progress-gesture="true"
+          :show-mute-btn="true"
+          :enable-play-gesture="true"
+        />
+      </view>
+      <view v-if="tabIndex === 2" class="m-x-20rpx m-t-40rpx">
+        <text class="font-size-30rpx">
+          完成了前面的学习快来进行简单的巩固测试吧，完成测试后将计入学习排行榜，与同学们一起分享学习心得!
+        </text>
+        <button @click="goQuiz">
+          开始测试
+        </button>
+      </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
+import type { Section } from '@/api/guide/types'
+import { postChapterDetail } from '@/api/guide'
+import { convertToChineseNumber } from '@/utils'
+
+const chapterId = ref<number>(0)
+const chapterIndex = ref<string>('')
+onLoad((options: any) => {
+  chapterId.value = options.chapterId
+  chapterIndex.value = convertToChineseNumber(options.chapterIndex)
+})
+
+const title = ref<string>('')
+const sectionList = ref<Array<Section>>([])
+const video = ref<string>('')
+const quizSetId = ref<number>(0)
+const des = ref<string>('')
+const watchedNum = ref<number | undefined>(0)
+const thumbNum = ref<number | undefined>(0)
+
+onMounted(async () => {
+  const res = await postChapterDetail({ chapter_id: chapterId.value })
+  title.value = res.title
+  sectionList.value = res.list
+  video.value = res.video
+  quizSetId.value = res.quiz_set_id
+  des.value = res.des
+  watchedNum.value = res.watched_num
+  thumbNum.value = res.thumb_num
+})
+
 const colorList = ['#dc5095', '#eb921a', '#5bba51']
 const recordList = ['开始学习', '已学习', '学习中']
 
@@ -101,23 +157,18 @@ const tabIndex = ref<number>(0)
 const changeTab = (item: { index: number }) => {
   tabIndex.value = item.index
 }
-const knowledgeList = reactive([
-  { title: '第一节：入口要求', learn_record: 1 },
-  { title: '第二节：室内活动空间', learn_record: 1 },
-  { title: '第三节：卧室环境要求', learn_record: 2 },
-  { title: '第四节：卫生间的设备', learn_record: 0 },
-  { title: '第五节：厨房空间要求', learn_record: 0 },
-  { title: '第六节：阳台空间要求', learn_record: 0 },
-  { title: '第七节：餐厅空间要求', learn_record: 0 },
-  { title: '第八节：洗手间空间要求', learn_record: 0 },
-  { title: '第九节：卫生间的设备', learn_record: 0 },
-  { title: '第十节：厨房空间要求', learn_record: 0 },
-  { title: '第十一节：阳台空间要求', learn_record: 0 },
-  { title: '第十二节：餐厅空间要求', learn_record: 0 },
-  { title: '第十三节：洗手间空间要求', learn_record: 0 },
-  { title: '第十四节：卫生间的设备', learn_record: 0 },
-  { title: '第十五节：厨房空间要求', learn_record: 0 },
-])
+
+const goCourse = (item: any) => {
+  uni.navigateTo({
+    url: `/pages/tab/guide/subpages/knowledge/index?sectionId=${item.section_id}`,
+  })
+}
+
+const goQuiz = () => {
+  uni.navigateTo({
+    url: '/pages/tab/guide/subpages/quiz/index',
+  })
+}
 </script>
 
 <style lang="scss">

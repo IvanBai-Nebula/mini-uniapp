@@ -14,19 +14,20 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  item: {
-    type: Object,
-    required: true,
-  },
-})
+import type { ChapterItem } from '@/api/guide/types'
+
+const props = defineProps<{
+  item: ChapterItem;
+  index: number;
+}>()
 
 const colorList = ['#dc5095', '#eb921a', '#5bba51']
 const recordList = ['开始学习', '已学习', '学习中']
 
 const goDetail = () => {
+  console.log(props.item)
   uni.navigateTo({
-    url: `/pages/tab/guide/subpages/courseDetail/index?id=${props.item.id}`,
+    url: `/pages/tab/guide/subpages/chapter/index?chapterId=${props.item.chapter_id}&chapterIndex=${props.index}`,
   })
 }
 </script>

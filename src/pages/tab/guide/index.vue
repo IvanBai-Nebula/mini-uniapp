@@ -11,8 +11,8 @@
     <!-- 导航栏 -->
     <up-sticky bg-color="#fff">
       <up-tabs
-        :list="tabList"
-        :current="tabIndex"
+        :list="courseTabList"
+        :current="courseTabIndex"
         line-color="#dc5095"
         :active-style="{ color: '#dc5095' }"
         :inactive-style="{ color: '#909399' }"
@@ -27,13 +27,13 @@
       @animationfinish="animationFinish"
     >
       <swiper-item
-        v-for="(item, index) in allCourseList"
+        v-for="(item, index) in allCourseChapterList"
         :key="index"
         class="h-full"
       >
         <scroll-view
           :ref="`scrollView${index}`"
-          :scroll-top="scrollTops[tabIndex]"
+          :scroll-top="scrollTops[courseTabIndex]"
           class="h-full w-auto"
           scroll-y
           @scrolltolower="reachBottom()"
@@ -42,14 +42,14 @@
           <!-- 有内容 -->
           <template v-if="item.list.length > 0">
             <!-- 资讯列表 -->
-            <CourseList
+            <ChapterList
               v-for="(childItem, childIndex) in item.list"
               :key="childIndex"
               :item="childItem"
               :index="childIndex"
             />
             <up-loadmore
-              :status="loadStatus[tabIndex]"
+              :status="loadStatus[courseTabIndex]"
               :nomore-text="nomoreText"
               style="height:60rpx"
             />
@@ -68,35 +68,35 @@
       </swiper-item>
     </swiper>
     <!-- 回到顶部 -->
-    <view v-if="scrollTop[tabIndex] > 400" class="go-top" @click="goTop">
+    <view v-if="scrollTop[courseTabIndex] > 400" class="go-top" @click="goTop">
       <up-icon color="#dc5095" name="arrow-up" size="24" />
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { getTabList, postCourse } from '@/api/guide'
-import type { AllCourseList, TabList } from '@/api/guide/types'
-import CourseList from './components/CourseList/index.vue'
+import { getCourseTabList, postCourseChapterList } from '@/api/guide'
+import ChapterList from './components/ChapterList/index.vue'
+import type { AllCourseChapterList, GuideCourseTabList } from '@/api/guide/types'
 
-const allCourseList = ref<AllCourseList>([])
+const allCourseChapterList = ref<AllCourseChapterList>([])
 const perPage = ref<number | null>(null)
 
 // 初始化数组的辅助函数
 const initArray = (length: number, value: any) => Array.from({ length }, () => value)
 
 const loadCoursesForTab = async (index: number) => {
-  if (allCourseList.value[index].list.length === 0) {
-    allCourseList.value[index] = await postCourse({
-      id: index,
+  if (allCourseChapterList.value[index].list.length === 0) {
+    allCourseChapterList.value[index] = await postCourseChapterList({
+      course_id: index,
       current_page: 1,
       per_page: perPage.value,
     })
   }
 }
 
-const tabList = ref<TabList>([])
-const tabIndex = ref<number>(0)
+const courseTabList = ref<GuideCourseTabList>([])
+const courseTabIndex = ref<number>(0)
 const swiperIndex = ref<number>(0)
 const scrollTops = ref<Array<number>>([])
 const scrollTop = ref<Array<number>>([])
@@ -104,12 +104,12 @@ const loadStatus = ref<Array<string>>([])
 const nomoreText = ref('实在没有了')
 
 onMounted(async () => {
-  const tabListRes = await getTabList()
-  tabList.value = tabListRes.list
-  const length = tabList.value.length
+  const tabListRes = await getCourseTabList()
+  courseTabList.value = tabListRes
+  const length = courseTabList.value.length
   scrollTops.value = initArray(length, 0)
   scrollTop.value = initArray(length, 0)
-  allCourseList.value = initArray(length, {
+  allCourseChapterList.value = initArray(length, {
     list: [],
     pagination: {
       total_items: 0,
@@ -120,52 +120,52 @@ onMounted(async () => {
   })
   loadStatus.value = initArray(length, 'loadmore')
 
-  await loadCoursesForTab(tabListRes.list[0].index)
-  console.log(allCourseList.value)
-  swiperIndex.value = tabListRes.list[0].index
+  await loadCoursesForTab(tabListRes[0].index)
+  console.log(allCourseChapterList.value)
+  swiperIndex.value = tabListRes[0].index
 })
 
-watch(tabIndex, async (newIndex) => {
+watch(courseTabIndex, async (newIndex) => {
   await loadCoursesForTab(newIndex)
   swiperIndex.value = newIndex
 })
 
 const fetchCourseList = async () => {
-  if (allCourseList.value[tabIndex.value].pagination.current_page === allCourseList.value[tabIndex.value].pagination.total_pages) {
-    loadStatus.value[tabIndex.value] = 'nomore'
+  if (allCourseChapterList.value[courseTabIndex.value].pagination.current_page === allCourseChapterList.value[courseTabIndex.value].pagination.total_pages) {
+    loadStatus.value[courseTabIndex.value] = 'nomore'
     return
   }
-  loadStatus.value[tabIndex.value] = 'loading'
-  const res = await postCourse({
-    id: tabIndex.value,
-    current_page: allCourseList.value[tabIndex.value].pagination.current_page + 1,
+  loadStatus.value[courseTabIndex.value] = 'loading'
+  const res = await postCourseChapterList({
+    course_id: courseTabIndex.value,
+    current_page: allCourseChapterList.value[courseTabIndex.value].pagination.current_page + 1,
     per_page: perPage.value,
   })
-  allCourseList.value[tabIndex.value].list = allCourseList.value[tabIndex.value].list.concat(res.list)
-  allCourseList.value[tabIndex.value].pagination.current_page += 1
-  loadStatus.value[tabIndex.value] = 'loadmore'
+  allCourseChapterList.value[courseTabIndex.value].list = allCourseChapterList.value[courseTabIndex.value].list.concat(res.list)
+  allCourseChapterList.value[courseTabIndex.value].pagination.current_page += 1
+  loadStatus.value[courseTabIndex.value] = 'loadmore'
 }
 
 const changeTab = (item: { index: number }) => {
-  tabIndex.value = item.index
+  courseTabIndex.value = item.index
 }
 
 const animationFinish = (e: { detail: { current: number } }) => {
-  tabIndex.value = e.detail.current
+  courseTabIndex.value = e.detail.current
   swiperIndex.value = e.detail.current
 }
 
 const reachBottom = () => {
-  if (loadStatus.value[tabIndex.value] !== 'loadmore') return
+  if (loadStatus.value[courseTabIndex.value] !== 'loadmore') return
   fetchCourseList()
 }
 
 const scroll = (e: { detail: { scrollTop: number } }) => {
-  scrollTop.value[tabIndex.value] = e.detail.scrollTop
+  scrollTop.value[courseTabIndex.value] = e.detail.scrollTop
 }
 
 const goTop = () => {
-  const index = tabIndex.value
+  const index = courseTabIndex.value
   scrollTops.value.splice(index, 1, scrollTop.value[index])
   nextTick(() => {
     scrollTops.value.splice(index, 1, 0)
