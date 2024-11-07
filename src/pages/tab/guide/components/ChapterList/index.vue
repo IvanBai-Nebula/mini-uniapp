@@ -25,9 +25,8 @@ const colorList = ['#dc5095', '#eb921a', '#5bba51']
 const recordList = ['开始学习', '已学习', '学习中']
 
 const goDetail = () => {
-  console.log(props.item)
   uni.navigateTo({
-    url: `/pages/tab/guide/subpages/chapter/index?chapterId=${props.item.chapter_id}&chapterIndex=${props.index}`,
+    url: `/pages/tab/guide/subpages/chapter/index?chapterId=${props.item.chapter_id}`,
   })
 }
 </script>

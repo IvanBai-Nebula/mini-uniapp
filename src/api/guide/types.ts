@@ -76,16 +76,19 @@ export type ChapterDetail = ChapterDetailResult
 节详情api,df
  */
 
+// 节详情即知识点列表
+export type KnowledgeList = Array<{ content: Array<string>; img: Array<string> }>
+
 // 节详情请求参数
 export interface SectionDetailParams {
   section_id: number; // 节ID
 }
 
 // 节详情请求结果
-export type SectionDetailResult = Array<{ content: Array<string>; img: Array<string> }>
-
-// 节详情即知识点列表
-export type KnowledgeList = SectionDetailResult
+export interface SectionDetailResult {
+  title: string; // 节标题
+  list: KnowledgeList; // 知识点列表
+}
 
 /*
 题库api

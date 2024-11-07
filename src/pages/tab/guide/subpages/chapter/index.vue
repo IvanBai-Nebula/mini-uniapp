@@ -18,7 +18,7 @@
     />
     <view class="course-detail-card">
       <text class="course-detail-title">
-        第{{ chapterIndex }}章 吞咽障碍管理知识
+        {{ title }}
       </text>
       <view class="course-detail-info flex">
         <view v-show="watchedNum !== undefined">
@@ -82,7 +82,7 @@
                 <button
                   class="course-btn"
                   :style="{ backgroundColor: colorList[item.learn_record] }"
-                  @click="goCourse(item)"
+                  @click="goSection(item)"
                 >
                   {{ recordList[item.learn_record] }}
                 </button>
@@ -116,13 +116,11 @@
 <script setup lang="ts">
 import type { Section } from '@/api/guide/types'
 import { postChapterDetail } from '@/api/guide'
-import { convertToChineseNumber } from '@/utils'
+import useGuideStore from '@/store/modules/guide'
 
 const chapterId = ref<number>(0)
-const chapterIndex = ref<string>('')
 onLoad((options: any) => {
   chapterId.value = options.chapterId
-  chapterIndex.value = convertToChineseNumber(options.chapterIndex)
 })
 
 const title = ref<string>('')
@@ -158,9 +156,11 @@ const changeTab = (item: { index: number }) => {
   tabIndex.value = item.index
 }
 
-const goCourse = (item: any) => {
+const guideStore = useGuideStore()
+const goSection = (item: any) => {
+  guideStore.addChapterToSection({ chapterId: chapterId.value, sectionIdList: sectionList.value.map((section: Section) => section.section_id) })
   uni.navigateTo({
-    url: `/pages/tab/guide/subpages/knowledge/index?sectionId=${item.section_id}`,
+    url: `/pages/tab/guide/subpages/knowledge/index?chapterId=${chapterId.value}&sectionId=${item.section_id}`,
   })
 }
 
